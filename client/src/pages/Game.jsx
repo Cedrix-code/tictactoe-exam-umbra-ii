@@ -21,29 +21,83 @@ function Game() {
     setCurrentMove,
     handlePlay,
     endGame,
+    resetGame,
+    gameStats,
+    currentGameStats,
   } = useGameLogic(player1, player2);
 
   const winnerInfo = calculateWinner(currentSquares);
   const winner = winnerInfo ? winnerInfo.winner : null;
+  const isDraw = !winner && currentSquares.every(Boolean);
   const status = winner
     ? `Winner: ${winner === 'X' ? player1 : player2}`
-    : currentSquares.every(Boolean)
+    : isDraw
     ? 'Draw!'
     : `Next player: ${xIsNext ? player1 : player2} (${xIsNext ? 'X' : 'O'})`;
 
+  const closeDialog = () => {
+    setShowDialog(false);
+  };
+
+  const handleGameEnd = async () => {
+    await endGame();
+    closeDialog();
+  };
+
+  const handlePlayAgain = () => {
+    resetGame();
+    closeDialog();
+  };
+
   return (
-    <div className="game">
-      <h2>{status}</h2>
-      <div className="game-board">
-        <Board squares={currentSquares} onPlay={handlePlay} xIsNext={xIsNext} />
-      </div>
-      <div className="game-info">
-        <button onClick={() => setIsAscending(!isAscending)}>Toggle Order</button>
-        <MoveList history={history} currentMove={currentMove} jumpTo={setCurrentMove} isAscending={isAscending} />
-        <button onClick={endGame}>End Game</button>
-      </div>
-      <GameDialog showDialog={showDialog} winner={winner} player1={player1} player2={player2} closeDialog={() => setShowDialog(false)} />
-    </div>
+    <main>
+      <h1 className="pt-4">Tic Tac Ohh</h1>
+        <div className="wrapper items-center justify-center bg-primary">
+          <div className="flex gap-8 items-start mt-8">
+            <div className="flex flex-col items-center">
+              <h2 className="text-2xl mb-4">{status}</h2>
+              <div className="game-board mb-4">
+                <Board squares={currentSquares} onPlay={handlePlay} xIsNext={xIsNext} />
+              </div>
+              <div className="flex gap-4 mt-4">
+                <button 
+                  onClick={resetGame} 
+                  className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 w-28"
+                >
+                  Reset
+                </button>
+                <button 
+                  onClick={endGame} 
+                  className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 w-28"
+                >
+                  Stop
+                </button>
+              </div>
+            </div>
+              <MoveList 
+                history={history} 
+                currentMove={currentMove} 
+                setCurrentMove={setCurrentMove} 
+                isAscending={isAscending}
+                setIsAscending={setIsAscending}
+              />
+          </div>
+
+          <GameDialog 
+            showDialog={showDialog}
+            winner={winner}
+            player1={player1}
+            player2={player2}
+            closeDialog={closeDialog}
+            onEndGame={handleGameEnd}
+            gameStats={gameStats}
+            currentGameStats={currentGameStats}
+            onPlayAgain={handlePlayAgain}
+            resetGame={resetGame}
+            isDraw={isDraw}
+          />
+        </div>
+    </main>
   );
 }
 

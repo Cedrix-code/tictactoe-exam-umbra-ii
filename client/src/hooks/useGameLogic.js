@@ -77,6 +77,12 @@ export default function useGameLogic(player1, player2) {
     }
   };
 
+  const resetGame = () => {
+    setHistory([{ squares: Array(9).fill(null), location: null }]);
+    setCurrentMove(0);
+    setShowDialog(false);
+  };
+
   return {
     history,
     currentMove,
@@ -90,5 +96,6 @@ export default function useGameLogic(player1, player2) {
     setCurrentMove,
     handlePlay,
     endGame,
+    resetGame,
   };
 }

@@ -20,22 +20,24 @@ function Board({ xIsNext, squares, onPlay }) {
       value={squares[i]}
       onClick={() => handleClick(i)}
       highlight={winningLine.includes(i)}
+      className="w-[150px] h-[150px] border-2 border-light-100 text-4xl font-bold flex items-center justify-center text-white hover:bg-light-100/10"
     />
   );
 
   const boardRows = Array.from({ length: 3 }, (_, row) => (
-    <div key={row}>
+    <div key={row} className="board-row flex">
       {Array.from({ length: 3 }, (_, col) => renderSquare(row * 3 + col))}
     </div>
   ));
 
   return (
-    <>
-      <div>
-        {winner ? `Winner: ${winner}` : squares.every(Boolean) ? 'Draw' : `Next player: ${xIsNext ? 'X' : 'O'}`}
+    <div className="flex justify-center items-center w-full">
+      <div className="board w-[450px] h-[450px] bg-dark-100/50 p-4 rounded-lg">
+        <div className="flex flex-col justify-between h-full">
+          {boardRows}
+        </div>
       </div>
-      {boardRows}
-    </>
+    </div>
   );
 }
 Board.propTypes = {

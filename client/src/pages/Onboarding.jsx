@@ -44,8 +44,11 @@ function Onboarding() {
 
   return (
     <main>
-      <div className="flex items-center justify-center min-h-screen">
+      <h1>Tic Tac Ohh</h1>
+      <div className="wrapper flex items-center justify-center">
+
         <div className="bg-dark-100 p-8 rounded-lg shadow-lg w-96">
+        <h2 className="text-center">Welcome Aboard!</h2>
           <div className="space-y-4">
             <PlayerSelection
               users={users}
@@ -57,7 +60,7 @@ function Onboarding() {
             
             <button
               onClick={startGame}
-              className="w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              className="w-full text-white py-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg shadow-md hover:from-blue-600 hover:to-purple-600 transition-all animate-bounce focus:animate-none hover:animate-none"
               disabled={!player1 || !player2}
             >
               Start Game

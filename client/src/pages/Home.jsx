@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
-import GameHistoryPopup from '../components/GameHistoryPopup';
-import { getGameStatus, getGameSummary } from '../utils/gameUtils';
+import RecentGames from '../components/RecentGames';
+import GameHistory from '../components/GameHistory';
+import Card from '../components/Card';
 
 function Home() {
   const [games, setGames] = useState([]);
@@ -26,66 +27,39 @@ function Home() {
   return (
     <main>
       <h1>Tic Tac Ohh</h1>
+      <Card>
+        <div className="wrapper items-center justify-center">
+          <h2>Recent Games</h2>
+          {games.length === 0 ? (
+            <p>No games played yet</p>
+          ) : (
+            <>
+              <RecentGames games={games} />
+              {!showAll && (
+                <button
+                  onClick={() => setShowAll(true)}
+                  className="text-blue-500 underline cursor-pointer mt-2"
+                >
+                  View More Games
+                </button>
+              )}
 
-      <div className="wrapper">
-        <h2>
-          Game <span className="text-gradient">History</span>
-        </h2>
-        {games.length === 0 ? (
-          <p>No games played yet</p>
-        ) : (
-          <>
-            <ul className="space-y-4">
-              {games.slice(0, 3).map((game) => (
-                <li key={game._id} className="history-centered">
-                  <div className="game-players">
-                    <span className="player-x">
-                      {game.player1?.name || 'Player 1'}
-                    </span>
-                    <span> vs </span>
-                    <span className="player-o">
-                      {game.player2?.name || 'Player 2'}
-                    </span>
-                  </div>
-                  <div className="game-details">
-                    <span>Rounds: {game.rounds.length} </span>
-                    {game.rounds.length > 0 && (
-                      <span className="game-summary">
-                        {getGameSummary(game)}
-                      </span>
-                    )}
-                  </div>
-                  <div className="game-status">
-                    Status: {getGameStatus(game)}
-                  </div>
-                </li>
-              ))}
-            </ul>
-            {!showAll && (
-              <button
-                onClick={() => setShowAll(true)}
-                className="text-blue-500 underline cursor-pointer mt-2"
-              >
-                View More
-              </button>
-            )}
-
-            {showAll && (
-              <GameHistoryPopup
-                games={games}
-                onClose={() => setShowAll(false)}
-              />
-            )}
-          </>
-        )}
-
-        <button
-          className="text-gradient mt-4"
-          onClick={() => navigate('/onboarding')}
-        >
-          Start New Game
-        </button>
-      </div>
+              {showAll && (
+                <GameHistory
+                  games={games}
+                  onClose={() => setShowAll(false)}
+                />
+              )}
+            </>
+          )}
+          <button
+            className="mt-4 px-6 py-2 text-white bg-gradient-to-r from-blue-500           to-purple-500 rounded-lg shadow-md hover:from-blue-600 hover:to-purple-600          transition-all"
+            onClick={() => navigate('/onboarding')}
+          >
+            Start New Game
+          </button>
+        </div>
+      </Card>
     </main>
   );
 }
