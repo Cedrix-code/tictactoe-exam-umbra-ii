@@ -11,7 +11,6 @@ const api = axios.create({
 // Add request interceptor
 api.interceptors.request.use(
   config => {
-    // Add origin header
     config.headers['Origin'] = window.location.origin;
     return config;
   },

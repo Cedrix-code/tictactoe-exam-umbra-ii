@@ -1,8 +1,9 @@
 // src/App.jsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import Game from './pages/Game';
 import Onboarding from './pages/Onboarding';
+import Game from './pages/Game';
+
 
 const App = () => {
   return (
@@ -11,7 +12,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/onboarding" element={<Onboarding />} />
-          <Route path="/game/:gameId" element={<Game />} />
+          <Route path="/game" element={<Game />} />
         </Routes>
       </div>
     </Router>

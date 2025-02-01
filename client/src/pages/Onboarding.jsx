@@ -29,18 +29,23 @@ function Onboarding() {
     }
 
     try {
-      const response = await api.post('/start-game', {
+      await api.post('/start-game', {
         player1Name: player1,
         player2Name: player2,
       });
 
-      const gameId = response.data._id;
-      navigate(`/game/${gameId}`, { state: { player1, player2 } });
+      // Navigate directly to game page with player names
+      navigate('/api/game', { 
+        state: { 
+          player1, 
+          player2 
+        } 
+      });
     } catch (error) {
       console.error('Error starting game:', error);
       alert('Failed to start game. Please try again.');
     }
-  };
+  };  
 
   const handleBack = () => {
     navigate('/');
