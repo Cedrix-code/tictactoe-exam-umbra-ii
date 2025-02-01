@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 4000;
 // CORS Configuration
 const allowedOrigins = [
   'https://tictacohh-ii-client.onrender.com',
-  'http://localhost:4000'
+  'http://localhost:4000'  // Express server
 ];
 
 const corsOptions = {

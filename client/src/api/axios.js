@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://tictactoe-exam-umbra-ii-server.onrender.com/api',
+  baseURL: 'https://tictactoe-umbra-ii-server.onrender.com/api',
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json'
