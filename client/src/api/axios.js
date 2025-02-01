@@ -1,10 +1,30 @@
-import axios from "axios";
+import axios from 'axios';
 
 const api = axios.create({
-  baseURL: `https://tictactoe-exam-umbra-ii-server.onrender.com/api`, // Add /api to match server routes
+  baseURL: 'https://tictactoe-exam-umbra-ii-server.onrender.com/api',
+  withCredentials: true,
   headers: {
-    "Content-Type": "application/json",
-  },
+    'Content-Type': 'application/json'
+  }
 });
+
+// Add request interceptor
+api.interceptors.request.use(
+  config => {
+    // Add origin header
+    config.headers['Origin'] = window.location.origin;
+    return config;
+  },
+  error => Promise.reject(error)
+);
+
+// Add response interceptor
+api.interceptors.response.use(
+  response => response,
+  error => {
+    console.error('API Error:', error);
+    throw error;
+  }
+);
 
 export default api;
