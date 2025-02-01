@@ -2,16 +2,16 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import gameRoutes from './routes/router.js';
+import gameRoutes from './routes/router';
 
 dotenv.config();
 
 const app = express();
 app.use(cors({
-  origin: "https://tictactoe-umbra-ii-client.onrender.com/api",
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE']
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE"],
 }));
+
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI)
@@ -27,3 +27,4 @@ app.use((req, res, next) => {
 app.use('/api', gameRoutes);
 
 const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
