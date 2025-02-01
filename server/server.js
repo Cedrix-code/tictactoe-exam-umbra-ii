@@ -7,7 +7,27 @@ import gameRoutes from './routes/game.routes.js';
 dotenv.config();
 
 const app = express();
-app.use(cors());
+const PORT = process.env.PORT || 4000;
+
+// CORS configuration
+const allowedOrigins = [
+  'https://tictacohh-ii-client.onrender.com',
+  'http://localhost:4000'
+];
+
+const app = express();
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI)
