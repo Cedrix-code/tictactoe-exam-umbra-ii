@@ -1,6 +1,6 @@
 import express from 'express';
 import { startGame, recordRound, endGame, getGames } from '../controllers/game.controller.js';
-import User from '../models/user.model.js'; // 
+import User from '../models/user.model.js'; // Import the User model
 
 const router = express.Router();
 
