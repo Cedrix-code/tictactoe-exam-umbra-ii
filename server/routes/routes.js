@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import routes from './routes/route.js';
+import routes from './routes/routes.js';
 import { startGame, recordRound, endGame, getGames } from '../controllers/game.controller.js';
 import User from '../models/user.model.js';
 
