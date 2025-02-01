@@ -12,6 +12,12 @@ const PORT = process.env.PORT || 4000;
 app.use(cors());
 app.use(express.json());
 
+const allowedOrigins = [
+  'https://tictacohh-ii-client.onrender.com',
+  'http://localhost:5173', // React dev server
+  'http://localhost:4000'  // Express server
+];
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.error('MongoDB connection error:', err));
