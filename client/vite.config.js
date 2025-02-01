@@ -1,22 +1,19 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-import vercel from 'vite-plugin-vercel';
+import tailwindcss from 'tailwindcss'
+import { vercel } from '@vercel/plugin-vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), vercel()],
   server: {
-    port: 5173,
-    port: process.env.PORT,
+    port: process.env.PORT || 5173
   },
   resolve: {
     alias: {
-      '@': '/src',
-    },
+      '@': '/src'
+    }
   },
-  return {
-    define: {
-      __APP_ENV__: process.env.VITE_VERCEL_ENV,
-    },
-  };
+  define: {
+    __APP_ENV__: process.env.VITE_VERCEL_ENV
+  }
 })

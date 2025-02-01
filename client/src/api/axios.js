@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api", // Add /api to match server routes
+  baseURL: `https://tictactoe-exam-umbra-ii-server.onrender.com/api`, // Add /api to match server routes
   headers: {
     "Content-Type": "application/json",
   },
