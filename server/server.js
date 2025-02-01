@@ -15,7 +15,6 @@ const allowedOrigins = [
   'http://localhost:4000'
 ];
 
-const app = express();
 app.use(cors({
   origin: function(origin, callback) {
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
