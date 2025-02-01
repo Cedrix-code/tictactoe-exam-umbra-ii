@@ -21,17 +21,12 @@ const allowedOrigins = [
 ];
 
 const corsOptions = {
-  origin: (origin, callback) => {
-    if (allowedOrigins.includes(origin) || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: 'GET,POST,PUT,DELETE,OPTIONS',
-  allowedHeaders: 'Content-Type,Authorization',
-  credentials: true,
+  origin: 'https://tictacohh-ii-client.onrender.com',
+  methods: ['GET', 'POST', 'PUT', 'DELETE','OPTIONS'], // Adjust as needed
+  allowedHeaders: ['Content-Type', 'Authorization'], // Adjust as needed
 };
+
+app.use(cors(corsOptions));
 
 app.use(cors(corsOptions));
 app.use(express.json());
