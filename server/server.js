@@ -7,7 +7,6 @@ import gameRoutes from './routes/game.routes.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
 
 // CORS configuration
 const allowedOrigins = [
