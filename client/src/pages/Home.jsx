@@ -26,7 +26,7 @@ function Home() {
 
   return (
     <main>
-      <h1>Tic Tac Ohh</h1>
+      <h1 className="text-gradient pt-4">Tic Tac Ohh</h1>
       <Card>
         <div className="wrapper items-center justify-center">
           <h2>Recent Games</h2>
@@ -53,7 +53,7 @@ function Home() {
             </>
           )}
           <button
-            className="mt-4 px-6 py-2 text-white bg-gradient-to-r from-blue-500           to-purple-500 rounded-lg shadow-md hover:from-blue-600 hover:to-purple-600          transition-all"
+            className="mt-4 px-6 py-2 text-white bg-gradient-to-r from-blue-500           to-purple-500 rounded-lg shadow-md hover:from-blue-600 hover:to-purple-600 transition-all absolute -bottom-10"
             onClick={() => navigate('/onboarding')}
           >
             Start New Game

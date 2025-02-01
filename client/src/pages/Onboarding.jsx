@@ -42,9 +42,13 @@ function Onboarding() {
     }
   };
 
+  const handleBack = () => {
+    navigate('/');
+  };
+
   return (
     <main>
-      <h1>Tic Tac Ohh</h1>
+      <h1 className="text-gradient pt-4">Tic Tac Ohh</h1>
       <div className="wrapper flex items-center justify-center">
 
         <div className="bg-dark-100 p-8 rounded-lg shadow-lg w-96">
@@ -64,6 +68,12 @@ function Onboarding() {
               disabled={!player1 || !player2}
             >
               Start Game
+            </button>
+            <button
+              onClick={handleBack}
+              className="w-full text-white py-2 bg-gray-500 rounded-lg shadow-md hover:bg-gray-600 transition-all"
+            >
+              Back
             </button>
           </div>
         </div>

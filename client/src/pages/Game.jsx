@@ -51,7 +51,7 @@ function Game() {
 
   return (
     <main>
-      <h1 className="pt-4">Tic Tac Ohh</h1>
+      <h1 className="text-gradient pt-4">Tic Tac Ohh</h1>
         <div className="wrapper items-center justify-center bg-primary">
           <div className="flex gap-8 items-start mt-8">
             <div className="flex flex-col items-center">
