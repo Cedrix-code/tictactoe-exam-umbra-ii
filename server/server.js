@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import gameRoutes from './routes/game.route.js';
+import gameRoutes from './routes/router.js';
 
 dotenv.config();
 
