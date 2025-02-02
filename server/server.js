@@ -4,11 +4,21 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import gameRoutes from './routes/router.js';
 
+// Load environment variables
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 4000;
+// MongoDB connection string
+const MONGODB_URI = process.env.MONGODB_URI;
 
-// Single CORS configuration
+// Validate MongoDB URI
+if (!MONGODB_URI) {
+  console.error('MONGODB_URI is not defined in environment variables');
+  process.exit(1);
+}
+
+// CORS and middleware configuration
 const corsOptions = {
   origin: [
     'http://localhost:4000',
@@ -34,17 +44,26 @@ app.use((req, res, next) => {
 // Routes
 app.use('/api', gameRoutes);
 
-// MongoDB connection
-const MONGODB_URI = process.env.MONGODB_URI;
-mongoose.connect(MONGODB_URI)
-  .then(() => {
+// MongoDB connection with error handling
+const connectDB = async () => {
+  try {
+    await mongoose.connect(MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log('MongoDB connected successfully');
-    const PORT = process.env.PORT || 4000;
-    app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
-  })
-  .catch((error) => {
+  } catch (error) {
     console.error('MongoDB connection error:', error);
     process.exit(1);
-  });
+  }
+};
+
+// Start server after DB connection
+const startServer = async () => {
+  await connectDB();
+  app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+};
+
+startServer().catch(console.error);
 
 export default app;
