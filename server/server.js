@@ -8,7 +8,6 @@ import gameRoutes from './routes/router.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
 // MongoDB connection string
 const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -61,6 +60,7 @@ const connectDB = async () => {
 // Start server after DB connection
 const startServer = async () => {
   await connectDB();
+  const PORT = process.env.PORT || 4000;
   app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
 };
 
