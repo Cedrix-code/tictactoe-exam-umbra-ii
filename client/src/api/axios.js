@@ -1,27 +1,34 @@
-import axios from 'axios';
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: 'https://tictactoe-umbra-ii-client.onrender.com/api',
+  baseURL: import.meta.env.VITE_API_URL || 'https://tictacohh-ii-server.onrender.com/api',
   withCredentials: true,
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 });
 
-// Add request interceptor
+// Simplified request interceptor without unsafe Origin header
 api.interceptors.request.use(
-  config => {
-    config.headers['Origin'] = window.location.origin;
-    return config;
-  },
-  error => Promise.reject(error)
+  (config) => config,
+  (error) => Promise.reject(error)
 );
 
-// Add response interceptor
+// Enhanced response interceptor with better error handling
 api.interceptors.response.use(
-  response => response,
-  error => {
-    console.error('API Error:', error);
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 404) {
+      console.error("Resource not found:", error.config.url);
+      throw new Error(`Resource not found: ${error.config.url}`);
+    }
+
+    if (!error.response) {
+      console.error("Network error:", error.message);
+      throw new Error("Network error. Please check your connection.");
+    }
+
+    console.error("API Error:", error);
     throw error;
   }
 );

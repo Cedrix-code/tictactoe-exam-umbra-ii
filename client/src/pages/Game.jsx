@@ -16,6 +16,7 @@ function Game() {
     currentSquares,
     isAscending,
     showDialog,
+    currentRoundWins,
     setShowDialog,
     setIsAscending,
     setCurrentMove,
@@ -95,6 +96,7 @@ function Game() {
             onPlayAgain={handlePlayAgain}
             resetGame={resetGame}
             isDraw={isDraw}
+            currentRoundWins={currentRoundWins}
           />
         </div>
     </main>

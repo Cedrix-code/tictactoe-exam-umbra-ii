@@ -1,7 +1,13 @@
 export const getGameStatus = (game) => {
   if (!game || !game.rounds) return 'Invalid Game';
-  if (!game.completed) return 'In Progress';
-
+  
+  // Check if the game is completed first
+  if (game.completed) {
+    if (game.isDraw) return "It's a Draw";
+    if (game.finalWinner) return `Winner: ${game.finalWinner.name}`;
+  }
+  
+  // For in-progress games
   const xWins = game.rounds.filter(round => 
     round.winner && round.winner._id === game.player1._id
   ).length;
@@ -10,18 +16,11 @@ export const getGameStatus = (game) => {
     round.winner && round.winner._id === game.player2._id
   ).length;
 
-  // Compare total wins
-  if (xWins > oWins) {
-    return `Winner: ${game.player1.name}`;
-  } else if (oWins > xWins) {
-    return `Winner: ${game.player2.name}`;
-  } else {
-    return "It's a Draw";
-  }
+  return 'In Progress';
 };
 
 export const getGameSummary = (game) => {
-  if (!game || !game.rounds) return null;
+  if (!game || !game.rounds) return '';
 
   const xWins = game.rounds.filter(round => 
     round.winner && round.winner._id === game.player1._id
@@ -33,5 +32,10 @@ export const getGameSummary = (game) => {
   
   const draws = game.rounds.filter(round => round.draw).length;
 
-  return `(X: ${xWins}, O: ${oWins})`;
+  // Ensure numbers are valid
+  const validXWins = isNaN(xWins) ? 0 : xWins;
+  const validOWins = isNaN(oWins) ? 0 : oWins;
+  const validDraws = isNaN(draws) ? 0 : draws;
+
+  return `(X: ${validXWins}, O: ${validOWins}, Draws: ${validDraws})`;
 };

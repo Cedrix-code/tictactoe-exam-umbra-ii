@@ -7,7 +7,7 @@ const GameDialog = ({
   player2,
   onEndGame,
   onPlayAgain,
-  gameStats,
+  currentRoundWins,
   isDraw
 }) => {
   if (!showDialog) return null;
@@ -20,9 +20,9 @@ const GameDialog = ({
         </div>
         <div className="mb-4 pl-6">
           <p>Game Statistics:</p>
-          <p>{player1}: {gameStats.player1Wins} wins</p>
-          <p>{player2}: {gameStats.player2Wins} wins</p>
-          <p>Draws: {gameStats.draws}</p>
+          <p>{player1}: {currentRoundWins.player1Wins || 0} wins</p>
+          <p>{player2}: {currentRoundWins.player2Wins || 0} wins</p>
+          <p>Draws: {currentRoundWins.draws || 0}</p>
         </div>
         <div className="flex justify-center space-x-4">
           <button
@@ -49,14 +49,13 @@ GameDialog.propTypes = {
   player1: PropTypes.string.isRequired,
   player2: PropTypes.string.isRequired,
   onEndGame: PropTypes.func.isRequired,
-  closeDialog: PropTypes.func.isRequired,
   onPlayAgain: PropTypes.func.isRequired,
-  gameStats: PropTypes.shape({
+  currentRoundWins: PropTypes.shape({
     player1Wins: PropTypes.number,
     player2Wins: PropTypes.number,
-    draws: PropTypes.number,
+    draws: PropTypes.number
   }).isRequired,
-  isDraw: PropTypes.bool.isRequired,
+  isDraw: PropTypes.bool.isRequired
 };
 
 export default GameDialog;

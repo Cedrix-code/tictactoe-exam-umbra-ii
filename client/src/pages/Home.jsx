@@ -14,14 +14,26 @@ function Home() {
     const fetchGames = async () => {
       try {
         const response = await api.get('/games');
-        const completedGames = response.data.filter((game) => game.completed);
-        setGames(completedGames);
+        const sortedGames = response.data
+          .filter(game => game.rounds && game.rounds.length > 0)
+          .sort((a, b) => {
+            // Sort by updatedAt date, then by completion status
+            if (a.updatedAt !== b.updatedAt) {
+              return new Date(b.updatedAt) - new Date(a.updatedAt);
+            }
+            return b.completed ? -1 : 1;
+          });
+        setGames(sortedGames);
       } catch (error) {
         console.error('Error fetching games:', error);
       }
     };
 
     fetchGames();
+
+    // Add polling to keep data fresh
+    const intervalId = setInterval(fetchGames, 5000);
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
@@ -53,7 +65,7 @@ function Home() {
             </>
           )}
           <button
-            className="mt-4 px-6 py-2 text-white bg-gradient-to-r from-blue-500           to-purple-500 rounded-lg shadow-md hover:from-blue-600 hover:to-purple-600 transition-all absolute -bottom-10"
+            className="mt-4 px-6 py-2 text-white bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg shadow-md hover:from-blue-600 hover:to-purple-600 transition-all absolute -bottom-10"
             onClick={() => navigate('/onboarding')}
           >
             Start New Game

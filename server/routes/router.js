@@ -1,23 +1,27 @@
 import express from 'express';
-import { startGame, recordRound, endGame, getGames } from '../controllers/game.controller.js';
-import User from '../models/user.model.js'; // Import the User model
+import { gameRouter } from '../controllers/gameController.js';
+import { UserController } from '../controllers/userController.js';
 
 const router = express.Router();
 
-// Existing game routes
-router.post('/start-game', startGame);
-router.post('/record-round', recordRound);
-router.post('/end-game', endGame);
-router.get('/games', getGames);
+// Mount game routes
+router.use('/', gameRouter);
 
-// New route to fetch all users
-router.get('/users', async (req, res) => {
+// User routes
+router.get('/users', UserController.getUsers);
+router.post('/users', UserController.createUser);
+
+router.get('/games', async (req, res) => {
   try {
-    const users = await User.find({}, 'name'); // Fetch only the 'name' field
-    res.json(users);
+    const games = await Game.find()
+      .populate('player1')
+      .populate('player2')
+      .populate('rounds.winner')
+      .sort({ updatedAt: -1 });
+    res.json(games);
   } catch (error) {
-    console.error('Error fetching users:', error);
-    res.status(500).json({ message: 'Failed to fetch users' });
+    console.error('Error fetching games:', error);
+    res.status(500).json({ message: 'Error fetching games' });
   }
 });
 

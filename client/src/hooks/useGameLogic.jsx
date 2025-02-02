@@ -10,7 +10,11 @@ export default function useGameLogic(player1, player2) {
   const [isAscending, setIsAscending] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
   const [gameId, setGameId] = useState(null);
-  const [gameStats, setGameStats] = useState({ player1Wins: 0, player2Wins: 0, draws: 0 });
+  const [currentRoundWins, setCurrentRoundWins] = useState({
+    player1Wins: 0,
+    player2Wins: 0,
+    draws: 0
+  });
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove].squares;
 
@@ -33,36 +37,29 @@ export default function useGameLogic(player1, player2) {
     startGame();
   }, [player1, player2, navigate]);
 
-  const updateGameStats = async (winnerInfo, squares) => {
-    if (!gameId) return;
-    if (!(winnerInfo || squares.every(Boolean))) return;
-
-    try {
-      const response = await api.post('/record-round', {
-        gameId,
-        winnerId: winnerInfo ? winnerInfo.winner : null,
-        isDraw: !winnerInfo && squares.every(Boolean),
-      });
-
-      setGameStats({
-        player1Wins: response.data.updatedPlayer1.wins,
-        player2Wins: response.data.updatedPlayer2.wins,
-        draws: response.data.updatedPlayer1.draws + response.data.updatedPlayer2.draws,
-      });
-    } catch (error) {
-      console.error('Error updating game stats:', error);
-    }
-  };
-
-  const handlePlay = async (nextSquares, i) => {
-    const nextHistory = [...history.slice(0, currentMove + 1), { squares: nextSquares, location: i }];
+  const handlePlay = async (nextSquares, location) => {
+    const nextHistory = [...history.slice(0, currentMove + 1), { squares: nextSquares, location }];
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length - 1);
 
     const winnerInfo = calculateWinner(nextSquares);
     if (winnerInfo || nextSquares.every(Boolean)) {
       setShowDialog(true);
-      await updateGameStats(winnerInfo, nextSquares);
+      
+      // Update stats
+      setCurrentRoundWins(prev => {
+        const newStats = { ...prev };
+        if (winnerInfo) {
+          if (winnerInfo.winner === 'X') {
+            newStats.player1Wins += 1;
+          } else {
+            newStats.player2Wins += 1;
+          }
+        } else if (nextSquares.every(Boolean)) {
+          newStats.draws += 1;
+        }
+        return newStats;
+      });
     }
   };
 
@@ -88,9 +85,9 @@ export default function useGameLogic(player1, player2) {
     currentMove,
     xIsNext,
     currentSquares,
-    gameStats,
     isAscending,
     showDialog,
+    currentRoundWins,
     setShowDialog,
     setIsAscending,
     setCurrentMove,
