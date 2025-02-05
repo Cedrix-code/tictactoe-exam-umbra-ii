@@ -17,6 +17,7 @@ router.get('/games', async (req, res) => {
       .populate('player1')
       .populate('player2')
       .populate('rounds.winner')
+      .populate('finalWinner')
       .sort({ updatedAt: -1 });
     res.json(games);
   } catch (error) {
