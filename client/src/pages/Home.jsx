@@ -8,31 +8,30 @@ import Card from '../components/Card';
 function Home() {
   const [games, setGames] = useState([]);
   const [showAll, setShowAll] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const fetchGames = async () => {
+    try {
+      const response = await api.get('/games');
+      // Filter out games with no rounds and sort by most recent
+      const sortedGames = response.data
+        .filter(game => game.rounds && game.rounds.length > 0)
+        .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+      setGames(sortedGames);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching games:', error);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchGames = async () => {
-      try {
-        const response = await api.get('/games');
-        const sortedGames = response.data
-          .filter(game => game.rounds && game.rounds.length > 0)
-          .sort((a, b) => {
-            // Sort by updatedAt date, then by completion status
-            if (a.updatedAt !== b.updatedAt) {
-              return new Date(b.updatedAt) - new Date(a.updatedAt);
-            }
-            return b.completed ? -1 : 1;
-          });
-        setGames(sortedGames);
-      } catch (error) {
-        console.error('Error fetching games:', error);
-      }
-    };
-
     fetchGames();
-
-    // Add polling to keep data fresh
+    
+    // Poll for updates every 5 seconds
     const intervalId = setInterval(fetchGames, 5000);
+    
     return () => clearInterval(intervalId);
   }, []);
 
@@ -42,7 +41,9 @@ function Home() {
       <Card>
         <div className="wrapper items-center justify-center">
           <h2>Recent Games</h2>
-          {games.length === 0 ? (
+          {loading ? (
+            <p>Loading...</p>
+          ) : games.length === 0 ? (
             <p>No games played yet</p>
           ) : (
             <>
