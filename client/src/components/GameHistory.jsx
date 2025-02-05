@@ -8,7 +8,7 @@ export default function GameHistory({ games, onClose }) {
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.8 }}
-      className="fixed inset-0 flex items-center justify-center bg-black/25 backdrop-blur-xs"
+      className="fixed inset-0 flex items-center justify-center bg-black/25 backdrop-blur-xs z-50"
     >
       <div className="bg-dark-100 p-4 rounded-lg shadow-lg w-[500px] h-[500px] relative overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-transparent dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
         <div className="sticky -top-1">
