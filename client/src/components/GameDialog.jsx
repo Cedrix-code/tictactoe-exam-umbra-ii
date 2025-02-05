@@ -13,7 +13,7 @@ const GameDialog = ({
   if (!showDialog) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center backdrop-blur-xs">
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center backdrop-blur-xs z-50">
       <div className="bg-dark-100 p-6 rounded-lg shadow-lg items-center max-w-md w-sm bounce-in">
         <div className="text-gradient text-xl font-bold mb-4 text-center">
           {isDraw ? "It's a Draw!" : `Winner: ${winner === 'X' ? player1 : player2}`}

@@ -1,41 +1,40 @@
+const countWins = (rounds, playerId) => {
+  if (!rounds || !playerId) return 0;
+  return rounds.filter(round => 
+    round.winner && round.winner._id === playerId
+  ).length;
+};
+
 export const getGameStatus = (game) => {
   if (!game || !game.rounds) return 'Invalid Game';
+  if (!game.player1 || !game.player2) return 'Missing Players';
   
-  // Check if the game is completed first
+  // Check completed games first
   if (game.completed) {
-    if (game.isDraw) return "It's a Draw";
-    if (game.finalWinner) return `Winner: ${game.finalWinner.name}`;
+    if (game.isDraw) return "It's a Draw!";
+    return game.finalWinner ? `Winner: ${game.finalWinner.name}` : 'Game Completed';
   }
-  
-  // For in-progress games
-  const xWins = game.rounds.filter(round => 
-    round.winner && round.winner._id === game.player1._id
-  ).length;
-  
-  const oWins = game.rounds.filter(round => 
-    round.winner && round.winner._id === game.player2._id
-  ).length;
 
-  return 'In Progress';
+  // Count current wins
+  const xWins = countWins(game.rounds, game.player1._id);
+  const oWins = countWins(game.rounds, game.player2._id);
+  
+  // Return more detailed in-progress status
+  return `In Progress (X: ${xWins}, O: ${oWins})`;
 };
 
 export const getGameSummary = (game) => {
   if (!game || !game.rounds) return '';
+  if (!game.player1 || !game.player2) return '';
 
-  const xWins = game.rounds.filter(round => 
-    round.winner && round.winner._id === game.player1._id
-  ).length;
-  
-  const oWins = game.rounds.filter(round => 
-    round.winner && round.winner._id === game.player2._id
-  ).length;
-  
-  const draws = game.rounds.filter(round => round.draw).length;
+  try {
+    const xWins = countWins(game.rounds, game.player1._id);
+    const oWins = countWins(game.rounds, game.player2._id);
+    const draws = game.rounds.filter(round => round.draw).length || 0;
 
-  // Ensure numbers are valid
-  const validXWins = isNaN(xWins) ? 0 : xWins;
-  const validOWins = isNaN(oWins) ? 0 : oWins;
-  const validDraws = isNaN(draws) ? 0 : draws;
-
-  return `(X: ${validXWins}, O: ${validOWins}, Draws: ${validDraws})`;
+    return `(X: ${xWins}, O: ${oWins}, Draws: ${draws})`;
+  } catch (error) {
+    console.error('Error generating game summary:', error);
+    return '(Error calculating scores)';
+  }
 };
