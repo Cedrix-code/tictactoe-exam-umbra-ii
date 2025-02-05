@@ -1,13 +1,14 @@
 import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import { getGameStatus, getGameSummary } from '../utils/gameUtils';
+import { useGameData } from '../hooks/useGameData';
 
 export default function GameHistory({ onClose }) {
   const { games, loading, error } = useGameData();
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
-  
+
   return (
     <motion.div 
       initial={{ opacity: 0, scale: 0.8 }}
